@@ -18,6 +18,25 @@
     ];
     
     programs.nix-ld.enable = true;
+
+    # Libraries for programs that arrive as ordinary Linux binaries, the
+    # way their makers ship them: Zed from zed.dev wants GLib and ALSA to
+    # load, and the Vulkan loader (with Mesa) to draw.
+    programs.nix-ld.libraries = with pkgs;
+    [
+        glib
+        alsa-lib
+        vulkan-loader
+        libGL
+        wayland
+        libxkbcommon
+        libx11
+        libxcb
+        fontconfig
+        freetype
+        dbus
+    ];
+
     nixpkgs.config.allowUnfree = true;
 
     # AppImages, run like any other binary: registered with binfmt, and
