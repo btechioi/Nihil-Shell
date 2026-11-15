@@ -10,6 +10,7 @@
         ./audio.nix
         ./hardware.nix
         ./users.nix
+        ./root.nix
         ./packages.nix
         ./hyprland.nix
         ./regreet.nix
