@@ -32,6 +32,8 @@
 	home.stateVersion = "26.05";
 	programs.home-manager.enable = true;
 
+	home.sessionPath = [ "$HOME/.opencode/bin" ];
+
 	home.packages =
 	[
 		pkgs.pavucontrol
