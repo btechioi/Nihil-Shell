@@ -271,6 +271,7 @@ let
 			hl.exec_cmd("nm-applet --indicator")
 			hl.exec_cmd("mic-led-sync")
 			hl.exec_cmd("nihil-wallpaper restore")
+			hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
 		end
 	'';
 in

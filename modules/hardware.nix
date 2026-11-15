@@ -42,11 +42,17 @@ in
     };
     services.fprintd.enable = config.nihil.fingerprint;
 
+    # Secret Service provider for apps that store credentials (Zed's GitHub
+    # login, browsers, ...). Without it they cannot persist tokens and ask
+    # to sign in again on every launch.
+    services.gnome.gnome-keyring.enable = true;
+
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     security.pam.services = lib.genAttrs [ "sudo" "su" "login" "polkit-1" "greetd" ] skipFingerprint //
     {
         hyprlock.fprintAuth = false;
+        greetd.enableGnomeKeyring = true;
     };
     zramSwap.enable = true;
     hardware.graphics.enable = true;
