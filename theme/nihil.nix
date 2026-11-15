@@ -24,6 +24,7 @@ in
 	{
 		scheme = "NIHIL";
 		author = "poligle";
+		variant = "dark";
 
 		base00 = palette.void;
 		base01 = palette.surface;

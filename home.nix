@@ -25,6 +25,7 @@
 		./home/fastfetch.nix
 		./home/clipboard.nix
 		./home/deck.nix
+		./home/editors.nix
 	];
 
 	home.username = osConfig.nihil.user.name;
