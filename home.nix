@@ -33,8 +33,6 @@
 	home.stateVersion = "26.05";
 	programs.home-manager.enable = true;
 
-	services.hyprpolkitagent.enable = true;
-
 	home.sessionPath = [ "$HOME/.opencode/bin" "$HOME/.local/bin" ];
 
 	home.packages =
