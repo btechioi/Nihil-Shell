@@ -15,6 +15,8 @@
         trash-cli
         sound-theme-freedesktop
         android-tools
+        libva-utils
+        intel-gpu-tools
     ];
     
     programs.nix-ld.enable = true;

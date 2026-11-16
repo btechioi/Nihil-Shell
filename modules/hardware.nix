@@ -55,7 +55,22 @@ in
         greetd.enableGnomeKeyring = true;
     };
     zramSwap.enable = true;
-    hardware.graphics.enable = true;
+    hardware.graphics = {
+        enable = true;
+        # VA-API / VDPAU drivers for the Intel HD 630 (Kaby Lake, gen9).
+        # iHD (intel-media-driver) is the modern driver; i965 is the legacy
+        # fallback. Both ship so whichever libva picks works.
+        extraPackages = with pkgs; [
+            intel-media-driver
+            intel-vaapi-driver
+            libva-vdpau-driver
+            vpl-gpu-rt
+        ];
+        extraPackages32 = with pkgs; [
+            intel-media-driver
+            intel-vaapi-driver
+        ];
+    };
     
     services.udev.extraRules = ''
         ACTION=="add", SUBSYSTEM=="leds", KERNEL=="platform::micmute", RUN+="${pkgs.coreutils}/bin/chgrp nihil-leds /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
