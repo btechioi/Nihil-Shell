@@ -1,6 +1,6 @@
 # hyprland.nix by poligle
 
-{ config, osConfig, pkgs, lib, ... }:
+{ config, osConfig, pkgs, lib, inputs, ... }:
 let
 	lua = lib.generators.mkLuaInline;
 	t = osConfig.nihil.tokens;
@@ -271,12 +271,34 @@ let
 			hl.exec_cmd("mic-led-sync")
 			hl.exec_cmd("nihil-wallpaper restore")
 			hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
-			hl.exec_cmd("env KDE_FULL_SESSION=true XDG_CURRENT_DESKTOP=KDE ${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent")
+			hl.exec_cmd("${inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.hyprpolkitagent}/libexec/hyprpolkitagent")
 		end
 	'';
 in
 {
 	stylix.targets.hyprland.enable = false;
+
+	xdg.configFile."hypr/hyprtoolkit.conf".text = ''
+		background = 0xFF${t.base16.base00}
+		base = 0xFF${t.base16.base01}
+		text = 0xFF${t.base16.base06}
+		alternate_base = 0xFF${t.base16.base02}
+		bright_text = 0xFF${t.base16.base07}
+		accent = 0xFF${t.base16.base08}
+		accent_secondary = 0xFF${t.base16.base0D}
+
+		font_family = ${t.fonts.sans}
+		font_family_monospace = ${t.fonts.code}
+		font_size = 11
+		small_font_size = 10
+		h1_size = 19
+		h2_size = 15
+		h3_size = 13
+
+		rounding_large = 0
+		rounding_small = 0
+
+	'';
 
 	warnings = lib.optional clipboardTaken
 		"NIHIL: ${clipboardKey}, the paste and clipboard history key, is taken by another action or program: give it another in Preferences, Shortcuts."

@@ -25,6 +25,8 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 			inputs.home-manager.follows = "home-manager";
 		};
+
+		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 	};
 	outputs = inputs@{ self, nixpkgs, home-manager, stylix, zen-browser, ... }:
 	let
