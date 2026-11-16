@@ -19,6 +19,12 @@ in
                 {
                     "ui.highlight" = colors.base03;
                     "ui.highlighttext" = colors.base06;
+
+                    # Hardware video decode via VA-API (Intel iHD).
+                    "media.ffmpeg.vaapi.enabled" = true;
+                    "media.hardware-video-decoding.force-enabled" = true;
+                    "gfx.webrender.all" = true;
+                    "widget.dmabuf.force-enabled" = true;
                 };
             };
         };

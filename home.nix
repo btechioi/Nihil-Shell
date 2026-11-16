@@ -35,6 +35,8 @@
 
 	home.sessionPath = [ "$HOME/.opencode/bin" "$HOME/.local/bin" ];
 
+	home.sessionVariables.MOZ_DISABLE_RDD_SANDBOX = "1";
+
 	home.packages =
 	[
 		pkgs.pavucontrol
