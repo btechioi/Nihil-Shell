@@ -361,7 +361,7 @@ in
 				{
 					rounding = t.windows.rounding;
 					active_opacity = 1.0;
-					inactive_opacity = 0.85;
+					inactive_opacity = 1.0;
 					fullscreen_opacity = 1.0;
 
 					shadow.enabled = false;
@@ -374,7 +374,7 @@ in
 						brightness = 0.5;
 						contrast = 1.0;
 						noise = 0;
-						xray = false;
+						xray = true;
 						popups = false;
 					};
 				};
