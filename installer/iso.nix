@@ -25,7 +25,7 @@ in
     environment.etc =
     {
         "nihil/template".source = ../templates/machine;
-        "nihil/source".text = "github:poligle/Nihil-Shell";
+        "nihil/source".text = "github:btechioi/Nihil-Shell";
         "nihil/rev".text = nihil.rev or "";
     };
 

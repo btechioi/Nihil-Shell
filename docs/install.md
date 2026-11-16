@@ -58,7 +58,7 @@ brings it to the NixOS release NIHIL pins, and it boots with systemd-boot.
 
 ```bash
 # NIHIL, cloned: your own copy, to read, change and pull
-git clone https://github.com/poligle/Nihil-Shell ~/Nihil-Shell
+git clone https://github.com/btechioi/Nihil-Shell ~/Nihil-Shell
 
 # The machine's flake, next to the hardware-configuration.nix /etc/nixos already has
 sudo cp -a /etc/nixos /etc/nixos.before-nihil
@@ -89,7 +89,7 @@ Then point the flake at the clone and switch (flakes are turned on for this firs
 NIHIL keeps them on). `HOST` is `host.name`:
 
 ```bash
-sudo sed -i "s|github:poligle/Nihil-Shell|path:$HOME/Nihil-Shell|" /etc/nixos/flake.nix
+sudo sed -i "s|github:btechioi/Nihil-Shell|path:$HOME/Nihil-Shell|" /etc/nixos/flake.nix
 sudo NIX_CONFIG="experimental-features = nix-command flakes" \
     nixos-rebuild switch --flake /etc/nixos#HOST
 ```

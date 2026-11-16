@@ -1,7 +1,7 @@
 {
 	description = "A machine running NIHIL";
 
-	inputs.nihil.url = "github:poligle/Nihil-Shell";
+	inputs.nihil.url = "github:btechioi/Nihil-Shell";
 
 	outputs = { nihil, ... }:
 	let
