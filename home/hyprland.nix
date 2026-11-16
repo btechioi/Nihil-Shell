@@ -361,7 +361,7 @@ in
 				{
 					rounding = t.windows.rounding;
 					active_opacity = 1.0;
-					inactive_opacity = 1.0;
+					inactive_opacity = 0.85;
 					fullscreen_opacity = 1.0;
 
 					shadow.enabled = false;
