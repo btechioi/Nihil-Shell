@@ -14,9 +14,13 @@
         playerctl
         trash-cli
         sound-theme-freedesktop
+        android-tools
     ];
     
     programs.nix-ld.enable = true;
+
+    # Android Debug Bridge + platform tools (adb, fastboot, ...). systemd 258
+    # grants device access via uaccess rules, so no adbusers group is needed.
 
     # Libraries for programs that arrive as ordinary Linux binaries, the
     # way their makers ship them: Zed from zed.dev wants GLib and ALSA to
