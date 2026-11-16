@@ -1,6 +1,9 @@
 # packages.nix by poligle
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, freesmlauncher, system, ... }:
+let
+    freesm = freesmlauncher.packages.${system}.freesmlauncher;
+in
 {
     environment.systemPackages = with pkgs; 
     [
@@ -17,6 +20,7 @@
         android-tools
         libva-utils
         intel-gpu-tools
+        freesm
     ];
     
     programs.nix-ld.enable = true;

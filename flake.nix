@@ -27,8 +27,14 @@
 		};
 
 		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+		freesmlauncher =
+		{
+			url = "github:FreesmTeam/FreesmLauncher";
+			inputs.nixpkgs.follows = "nixpkgs-unstable";
+		};
 	};
-	outputs = inputs@{ self, nixpkgs, home-manager, stylix, zen-browser, ... }:
+	outputs = inputs@{ self, nixpkgs, home-manager, stylix, zen-browser, nixpkgs-unstable, freesmlauncher, ... }:
 	let
 		system = "x86_64-linux";
 
@@ -59,6 +65,7 @@
 		lib.mkSystem = { settings ? { }, modules ? [ ], home ? [ ] }: nixpkgs.lib.nixosSystem
 		{
 			inherit system;
+			specialArgs = { inherit freesmlauncher; system = "x86_64-linux"; };
 			modules = [ self.nixosModules.default { nihil = { inherit settings home revision; }; } ] ++ modules;
 		};
 
