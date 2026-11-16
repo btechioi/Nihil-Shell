@@ -271,7 +271,7 @@ let
 			hl.exec_cmd("mic-led-sync")
 			hl.exec_cmd("nihil-wallpaper restore")
 			hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
-			hl.exec_cmd("${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent")
+			hl.exec_cmd("env KDE_FULL_SESSION=true XDG_CURRENT_DESKTOP=KDE ${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent")
 		end
 	'';
 in
