@@ -36,7 +36,7 @@
 
 		hyprkvm =
 		{
-			url = "github:tenseleyFlow/hyprKVM";
+			url = "github:btechioi/hyprKVM";
 			inputs.nixpkgs.follows = "nixpkgs-unstable";
 		};
 	};
