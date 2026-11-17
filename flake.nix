@@ -33,8 +33,14 @@
 			url = "github:FreesmTeam/FreesmLauncher";
 			inputs.nixpkgs.follows = "nixpkgs-unstable";
 		};
+
+		hyprkvm =
+		{
+			url = "github:tenseleyFlow/hyprKVM";
+			inputs.nixpkgs.follows = "nixpkgs-unstable";
+		};
 	};
-	outputs = inputs@{ self, nixpkgs, home-manager, stylix, zen-browser, nixpkgs-unstable, freesmlauncher, ... }:
+	outputs = inputs@{ self, nixpkgs, home-manager, stylix, zen-browser, nixpkgs-unstable, freesmlauncher, hyprkvm, ... }:
 	let
 		system = "x86_64-linux";
 
@@ -65,7 +71,7 @@
 		lib.mkSystem = { settings ? { }, modules ? [ ], home ? [ ] }: nixpkgs.lib.nixosSystem
 		{
 			inherit system;
-			specialArgs = { inherit freesmlauncher; system = "x86_64-linux"; };
+			specialArgs = { inherit freesmlauncher hyprkvm; system = "x86_64-linux"; };
 			modules = [ self.nixosModules.default { nihil = { inherit settings home revision; }; } ] ++ modules;
 		};
 

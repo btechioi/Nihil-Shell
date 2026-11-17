@@ -1,8 +1,9 @@
 # packages.nix by poligle
 
-{ config, lib, pkgs, freesmlauncher, system, ... }:
+{ config, lib, pkgs, freesmlauncher, hyprkvm, system, ... }:
 let
     freesm = freesmlauncher.packages.${system}.freesmlauncher;
+    hyprkvmPkg = hyprkvm.packages.${system}.default;
 in
 {
     environment.systemPackages = with pkgs; 
@@ -21,6 +22,7 @@ in
         libva-utils
         intel-gpu-tools
         freesm
+        hyprkvmPkg
     ];
     
     programs.nix-ld.enable = true;
