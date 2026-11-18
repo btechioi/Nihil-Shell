@@ -52,6 +52,16 @@ in
             gl = "git log --oneline -10";
             gd = "git diff";
         };
+
+        initContent = ''
+            # fnm (Fast Node Manager) — nvm replacement
+            eval "$(${pkgs.fnm}/bin/fnm env --use-on-cd --shell zsh)"
+
+            # rustup toolchain manager
+            export RUSTUP_HOME="$HOME/.rustup"
+            export CARGO_HOME="$HOME/.cargo"
+            [ -f "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
+        '';
     };
 
     programs.starship =

@@ -23,6 +23,15 @@ in
         intel-gpu-tools
         freesm
         hyprkvmPkg
+
+        # Dev tooling
+        uv
+        fnm
+        nodejs
+        rustup
+        fvm
+        go
+        python3
     ];
     
     programs.nix-ld.enable = true;
