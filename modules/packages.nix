@@ -7,10 +7,10 @@ let
     # Prebuilt hyprkvm from GitHub releases (no compilation on the machine).
     hyprkvmPkg = pkgs.stdenv.mkDerivation {
         pname = "hyprkvm";
-        version = "0.6.9";
+        version = "0.6.10";
         src = pkgs.fetchurl {
-            url = "https://github.com/btechioi/hyprKVM/releases/download/v0.6.9/hyprkvm-x86_64-unknown-linux-gnu.tar.gz";
-            sha256 = "6dfb03f4a984d3ae1209e4e6dc98709ef9f344c0fa68dfd1608be4cd0aa4b9bd";
+            url = "https://github.com/btechioi/hyprKVM/releases/download/v0.6.10/hyprkvm-x86_64-unknown-linux-gnu.tar.gz";
+            sha256 = "fd3204da349cca819cf97d11e64ac2ba384d2b926ea5dd4073140feb705e4270";
         };
         sourceRoot = ".";
         nativeBuildInputs = [ pkgs.makeWrapper ];
