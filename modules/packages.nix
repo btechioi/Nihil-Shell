@@ -1,9 +1,36 @@
 # packages.nix by poligle
 
-{ config, lib, pkgs, freesmlauncher, hyprkvm, system, ... }:
+{ config, lib, pkgs, freesmlauncher, system, ... }:
 let
     freesm = freesmlauncher.packages.${system}.freesmlauncher;
-    hyprkvmPkg = hyprkvm.packages.${system}.default;
+
+    # Prebuilt hyprkvm from GitHub releases (no compilation on the machine).
+    hyprkvmPkg = pkgs.stdenv.mkDerivation {
+        pname = "hyprkvm";
+        version = "0.6.7";
+        src = pkgs.fetchurl {
+            url = "https://github.com/btechioi/hyprKVM/releases/download/v0.6.7/hyprkvm-x86_64-unknown-linux-gnu.tar.gz";
+            sha256 = "2274415dc39e9e2fad2027ad771130273c9533f213b47198b5df99ce62055822";
+        };
+        sourceRoot = ".";
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        buildInputs = with pkgs; [ wayland libxkbcommon openssl vulkan-loader libGL ];
+        installPhase = ''
+            mkdir -p $out/bin
+            cp hyprkvm $out/bin/
+            cp hyprkvm-ctl $out/bin/
+            chmod +x $out/bin/hyprkvm $out/bin/hyprkvm-ctl
+            wrapProgram $out/bin/hyprkvm \
+                --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath (with pkgs; [ wayland libxkbcommon openssl vulkan-loader libGL ])}
+        '';
+        meta = with pkgs.lib; {
+            description = "Hyprland-native software KVM switch";
+            homepage = "https://github.com/btechioi/hyprKVM";
+            license = licenses.mit;
+            platforms = platforms.linux;
+            mainProgram = "hyprkvm";
+        };
+    };
 in
 {
     environment.systemPackages = with pkgs; 
