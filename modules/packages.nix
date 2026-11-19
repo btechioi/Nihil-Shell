@@ -10,7 +10,7 @@ let
         version = "0.6.7";
         src = pkgs.fetchurl {
             url = "https://github.com/btechioi/hyprKVM/releases/download/v0.6.7/hyprkvm-x86_64-unknown-linux-gnu.tar.gz";
-            sha256 = "2274415dc39e9e2fad2027ad771130273c9533f213b47198b5df99ce62055822";
+            sha256 = "6fecb1c1148c128194e64278acff4031ef5d2e0b3f47e124fc35062d3b31502e";
         };
         sourceRoot = ".";
         nativeBuildInputs = [ pkgs.makeWrapper ];
