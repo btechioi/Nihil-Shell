@@ -208,11 +208,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794924652,
-        "narHash": "sha256-ywvpOiVcSonAtwz59dWZlvZRfkUrIQhVb+HU2cvXKeQ=",
+        "lastModified": 1795069155,
+        "narHash": "sha256-ebKnDCKmbKra2cgCs2X87ow4bKF6gHya7kU+phh7KEk=",
         "owner": "btechioi",
         "repo": "hyprKVM",
-        "rev": "8bb5732961f5c2f0f03ead988496fc0d19e2632c",
+        "rev": "8d569ed89e009c2bd86fd789092d3ec64076da8b",
         "type": "github"
       },
       "original": {
