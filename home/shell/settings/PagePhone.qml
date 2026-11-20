@@ -174,18 +174,83 @@ Flickable {
                 Txt {
                     x: 14
                     anchors.verticalCenter: parent.verticalCenter
-                    text: kvmPeer.modelData.name + " (" + kvmPeer.modelData.direction + ")"
+                    text: kvmPeer.modelData.name + " (" + kvmPeer.modelData.direction + ") — " + kvmPeer.modelData.address
                     color: kvmPeer.modelData.connected ? Tokens.ink : Tokens.dim
                     font.pixelSize: 12
+                    width: parent.width - 120
+                    elide: Text.ElideRight
                 }
 
                 Txt {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 14
+                    anchors.right: removeBtn.left
+                    anchors.rightMargin: 8
                     anchors.verticalCenter: parent.verticalCenter
                     text: kvmPeer.modelData.connected ? "●" : "○"
                     color: kvmPeer.modelData.connected ? Tokens.signal : Tokens.muted
                     font.pixelSize: 14
+                }
+
+                KeyButton {
+                    id: removeBtn
+                    anchors.right: parent.right
+                    anchors.rightMargin: 8
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Remove"
+                    onClicked: {
+                        Quickshell.execDetached([Config.cmd.hyprkvmCtl, "remove-peer", kvmPeer.modelData.name]);
+                        Quickshell.execDetached(["sh", "-c", "pkill -f 'hyprkvm daemon'; sleep 1; hyprkvm daemon &"]);
+                        Kvm.check();
+                    }
+                }
+            }
+        }
+
+        Heading {
+            title: "Add peer"
+            Layout.topMargin: 8
+        }
+
+        property string peerDir: "left"
+
+        RowLayout {
+            spacing: 6
+            Repeater {
+                model: ["left", "right", "up", "down"]
+                delegate: KeyButton {
+                    required property string modelData
+                    text: modelData
+                    accent: column.peerDir === modelData
+                    onClicked: column.peerDir = modelData
+                }
+            }
+        }
+
+        RowLayout {
+            spacing: 8
+            Layout.fillWidth: true
+
+            Field {
+                id: peerNameField
+                placeholder: "Name"
+                implicitWidth: 120
+            }
+
+            Field {
+                id: peerAddrField
+                placeholder: "Address (host:port)"
+                Layout.fillWidth: true
+            }
+
+            KeyButton {
+                text: "Add"
+                accent: true
+                onClicked: {
+                    if (peerNameField.text === "" || peerAddrField.text === "") return;
+                    Quickshell.execDetached([Config.cmd.hyprkvmCtl, "add-peer", peerNameField.text, column.peerDir, peerAddrField.text]);
+                    Quickshell.execDetached(["sh", "-c", "pkill -f 'hyprkvm daemon'; sleep 1; hyprkvm daemon &"]);
+                    peerNameField.clear();
+                    peerAddrField.clear();
+                    Kvm.check();
                 }
             }
         }
