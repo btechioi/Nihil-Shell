@@ -139,5 +139,71 @@ Flickable {
             }
         }
 
+        Heading {
+            title: "HyprKVM"
+            Layout.topMargin: 8
+        }
+
+        Label {
+            text: "State: " + Kvm.state + (Kvm.machine ? " (" + Kvm.machine + ")" : "")
+            font.pixelSize: 12
+        }
+
+        Label {
+            text: Kvm.peers.length > 0 ? (Kvm.connectedCount + "/" + Kvm.peers.length + " peers connected") : "No peers found"
+            font.pixelSize: 12
+        }
+
+        Repeater {
+            model: Kvm.peers
+
+            Item {
+                id: kvmPeer
+
+                required property var modelData
+
+                Layout.fillWidth: true
+                implicitHeight: 36
+
+                Surface {
+                    anchors.fill: parent
+                    radius: 8
+                    color: kvmPeer.modelData.connected ? Tokens.surface : "transparent"
+                }
+
+                Txt {
+                    x: 14
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: kvmPeer.modelData.name + " (" + kvmPeer.modelData.direction + ")"
+                    color: kvmPeer.modelData.connected ? Tokens.ink : Tokens.dim
+                    font.pixelSize: 12
+                }
+
+                Txt {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 14
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: kvmPeer.modelData.connected ? "●" : "○"
+                    color: kvmPeer.modelData.connected ? Tokens.signal : Tokens.muted
+                    font.pixelSize: 14
+                }
+            }
+        }
+
+        RowLayout {
+            spacing: 8
+            visible: Kvm.active
+
+            KeyButton {
+                text: "Return control"
+                onClicked: Kvm.returnControl()
+            }
+
+            KeyButton {
+                text: "Release"
+                onClicked: Kvm.release()
+            }
+        }
+
     }
 }
