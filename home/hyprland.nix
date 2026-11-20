@@ -272,6 +272,7 @@ let
 			hl.exec_cmd("nihil-wallpaper restore")
 			hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
 			hl.exec_cmd("${inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.hyprpolkitagent}/libexec/hyprpolkitagent")
+			hl.exec_cmd("hyprkvm daemon")
 		end
 	'';
 in
