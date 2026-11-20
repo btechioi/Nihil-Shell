@@ -438,7 +438,6 @@ Scope {
                         width: win.kvmD
                         height: win.kvmD
                         anchors.bottom: parent.bottom
-                        active: win.kvmOpen
                         opacity: win.reveal(win.kvmP)
                     }
                 }
