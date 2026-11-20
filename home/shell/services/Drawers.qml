@@ -14,7 +14,7 @@ Singleton {
     property string screen: ""
     property bool byHover: false
 
-    readonly property var edges: ({ dashboard: "top", clipboard: "top", overview: "top", launcher: "bottom", wallpapers: "bottom", panel: "right", kvm: "right" })
+    readonly property var edges: ({ dashboard: "top", clipboard: "top", overview: "top", launcher: "bottom", wallpapers: "bottom", panel: "right" })
     property var waiting: null
 
     function focusedScreen(): string {
