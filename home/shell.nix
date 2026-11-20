@@ -70,6 +70,8 @@ let
 		shot = "${profile}/nihil-shot";
 		xdgUserDir = "${pkgs.xdg-user-dirs}/bin/xdg-user-dir";
 		hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
+		hyprkvm = "/run/current-system/sw/bin/hyprkvm";
+		hyprkvmCtl = "/run/current-system/sw/bin/hyprkvm-ctl";
 		sudo = "/run/wrappers/bin/sudo";
 		nihil = "/run/current-system/sw/bin/nihil";
 		timedatectl = "${pkgs.systemd}/bin/timedatectl";

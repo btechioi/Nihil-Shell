@@ -53,6 +53,7 @@ Scope {
 
         readonly property bool dashOpen: Drawers.isOpen("dashboard", root.output)
         readonly property bool panelOpen: Drawers.isOpen("panel", root.output)
+        readonly property bool kvmOpen: Drawers.isOpen("kvm", root.output)
         readonly property bool launcherOpen: Drawers.isOpen("launcher", root.output)
         readonly property bool wallOpen: Drawers.isOpen("wallpapers", root.output)
         readonly property bool clipOpen: Drawers.isOpen("clipboard", root.output)
@@ -62,6 +63,7 @@ Scope {
 
         property real dashP: dashOpen ? 1 : 0
         property real panelP: panelOpen ? 1 : 0
+        property real kvmP: kvmOpen ? 1 : 0
         property real launcherP: launcherOpen ? 1 : 0
         property real wallP: wallOpen ? 1 : 0
         property real clipP: clipOpen ? 1 : 0
@@ -70,6 +72,7 @@ Scope {
 
         Behavior on dashP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
         Behavior on panelP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
+        Behavior on kvmP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
         Behavior on launcherP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
         Behavior on wallP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
         Behavior on clipP { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
@@ -86,6 +89,7 @@ Scope {
         Behavior on dashD { NumberAnimation { duration: Tokens.animNormal; easing.type: Easing.OutCubic } }
         readonly property real panelL: Math.min(height - 2 * root.edge - 96, 860)
         readonly property real panelD: 400
+        readonly property real kvmD: 300
         readonly property real launcherW: Math.min(860, innerW - 120)
         property real launcherD: launcher.niloMode ? Math.min(680, height - 2 * root.edge - 140) : 470
         Behavior on launcherD { NumberAnimation { duration: Tokens.animDrawer; easing.type: Easing.OutCubic } }
@@ -411,6 +415,31 @@ Scope {
                     onPressed: mouse => {
                         Drawers.byHover = false;
                         mouse.accepted = false;
+                    }
+                }
+            }
+
+            Item {
+                id: kvmHit
+                x: win.width - root.edge - win.kvmD * win.kvmP
+                y: 0
+                width: win.kvmP > 0 ? win.kvmD * win.kvmP + root.edge : 0
+                height: root.edge + win.kvmD * win.kvmP
+                clip: true
+
+                Item {
+                    y: root.edge
+                    width: parent.width
+                    height: win.kvmD * win.kvmP
+                    clip: true
+
+                    KvmView {
+                        id: kvmView
+                        width: win.kvmD
+                        height: win.kvmD
+                        anchors.bottom: parent.bottom
+                        active: win.kvmOpen
+                        opacity: win.reveal(win.kvmP)
                     }
                 }
             }

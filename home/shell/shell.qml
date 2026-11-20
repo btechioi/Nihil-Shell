@@ -11,7 +11,7 @@ import qs.background
 import qs.settings
 
 ShellRoot {
-    readonly property var services: [Drawers, Osd, Glyph, Notifs, Battery, Audio, Network, Bt, Nilo, Machine, Clipboard, Updates, Apps, Media, Recorder, Downloads, Switcher, Vector]
+    readonly property var services: [Drawers, Osd, Glyph, Notifs, Battery, Audio, Network, Bt, Nilo, Machine, Clipboard, Updates, Apps, Media, Recorder, Downloads, Switcher, Vector, Kvm]
 
     Variants {
         model: Quickshell.screens
