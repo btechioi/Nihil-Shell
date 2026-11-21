@@ -99,8 +99,25 @@ while true; do
     fi
     dim "$(t "They don't match (or it's empty). Again." "No coinciden (o está vacía). Otra vez.")"
 done
+# Host profile selection (if available)
+hostProfile=""
+if [ -d /etc/nihil/hosts ]; then
+    hosts=()
+    for d in /etc/nihil/hosts/*/; do
+        [ -f "$d/settings.json" ] || continue
+        hosts+=("$(basename "$d")")
+    done
+    if [ ''${#hosts[@]} -gt 0 ]; then
+        choice=$(gum choose --header "$(t "Host profile" "Perfil de equipo")" "Custom (auto-detect)" "''${hosts[@]}")
+        if [ "$choice" != "Custom (auto-detect)" ]; then
+            hostProfile="$choice"
+            hostname=$(jq -r '.host.name // "nihil"' "/etc/nihil/hosts/$hostProfile/settings.json")
+        fi
+    fi
+fi
+
 until [[ ${hostname:-} =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; do
-    hostname=$(gum input --header "$(t "Name of this computer" "Nombre de este ordenador")" --value "nihil")
+    hostname=$(gum input --header "$(t "Name of this computer" "Nombre de este ordenador")" --value "''${hostname:-nihil}")
 done
 
 live=$(lsblk -no PKNAME "$(findmnt -no SOURCE /iso 2>/dev/null || true)" 2>/dev/null || true)
@@ -644,6 +661,15 @@ rm -f "$etc/configuration.nix"
 cp -r "$template/." "$etc/"
 chmod -R u+w "$etc"
 
+# If a host profile was selected, overlay its config files
+if [ -n "$hostProfile" ] && [ -d "/etc/nihil/hosts/$hostProfile" ]; then
+    for f in local.nix home.nix hardware-configuration.nix; do
+        if [ -f "/etc/nihil/hosts/$hostProfile/$f" ]; then
+            cp "/etc/nihil/hosts/$hostProfile/$f" "$etc/$f"
+        fi
+    done
+fi
+
 outputs='{}'
 for connector in /sys/class/drm/card*-*; do
     [ "$(cat "$connector/status" 2>/dev/null)" = connected ] || continue
@@ -665,25 +691,36 @@ if lsusb 2>/dev/null | grep -qiE 'fingerprint|synaptics.*(fp|finger)|goodix|elan
     fingerprint=true
 fi
 
-jq -n \
-    --arg name "$username" --arg fullName "$fullname" --arg host "$hostname" \
-    --arg language "$lang" --arg locale "$locale" --arg zone "$zone" \
-    --arg layout "$layout" --arg model "$model" \
-    --argjson outputs "$outputs" --argjson fingerprint "$fingerprint" \
-    '{
-        version: 1,
-        user: { name: $name, fullName: $fullName },
-        host: { name: $host },
-        language: $language,
-        locale: $locale,
-        timeZone: $zone,
-        keyboard: { layout: $layout, variant: "", model: $model },
-        outputs: $outputs,
-        wallpaper: "night",
-        nilo: { enable: false, acceleration: "cpu", integratedGpu: false },
-        fingerprint: $fingerprint,
-        ssh: false
-    }' > "$etc/settings.json"
+if [ -n "$hostProfile" ]; then
+    # Use the selected host profile's settings as the base
+    jq --arg host "$hostname" --arg name "$username" --arg fullName "$fullname" \
+        --arg language "$lang" --arg locale "$locale" --arg zone "$zone" \
+        --arg layout "$layout" --arg model "$model" \
+        '.host.name = $host | .user.name = $name | .user.fullName = $fullName |
+         .language = $language | .locale = $locale | .timeZone = $zone |
+         .keyboard.layout = $layout | .keyboard.model = $model' \
+        "/etc/nihil/hosts/$hostProfile/settings.json" > "$etc/settings.json"
+else
+    jq -n \
+        --arg name "$username" --arg fullName "$fullname" --arg host "$hostname" \
+        --arg language "$lang" --arg locale "$locale" --arg zone "$zone" \
+        --arg layout "$layout" --arg model "$model" \
+        --argjson outputs "$outputs" --argjson fingerprint "$fingerprint" \
+        '{
+            version: 1,
+            user: { name: $name, fullName: $fullName },
+            host: { name: $host },
+            language: $language,
+            locale: $locale,
+            timeZone: $zone,
+            keyboard: { layout: $layout, variant: "", model: $model },
+            outputs: $outputs,
+            wallpaper: "night",
+            nilo: { enable: false, acceleration: "cpu", integratedGpu: false },
+            fingerprint: $fingerprint,
+            ssh: false
+        }' > "$etc/settings.json"
+fi
 
 gpu=""
 if lspci -nn | grep -Ei 'vga|3d|display' | grep -qiE 'amd|ati'; then

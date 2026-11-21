@@ -25,6 +25,7 @@ in
     environment.etc =
     {
         "nihil/template".source = ../templates/machine;
+        "nihil/hosts".source = ../hosts;
         "nihil/source".text = "github:btechioi/Nihil-Shell";
         "nihil/rev".text = nihil.rev or "";
     };
