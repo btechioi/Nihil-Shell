@@ -1,0 +1,24 @@
+{ config, lib, pkgs, ... }:
+{
+	system.stateVersion = "26.05";
+
+	users.users.banumath.extraGroups = [ "input" "dialout" "uinput" ];
+
+	nihil.extraWallpapers = lib.optional (builtins.pathExists ./wallpapers) ./wallpapers;
+
+	# Cachix for FreesmLauncher
+	nix.settings.substituters = [ "https://freesmlauncher.cachix.org" "https://cache.nixos.org/" ];
+	nix.settings.trusted-public-keys = [
+		"freesmlauncher.cachix.org-1:Jcp5Q9wiLL+EDv8Mh7c6L9xGk+lXr7/otpKxMOuBuDs="
+		"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+	];
+
+	# Wi-Fi (fill in your PSK)
+	networking.networkmanager.ensureProfiles.profiles."home-wifi" = {
+		connection = { id = "Home-Wifi-5G"; type = "wifi"; interface-name = "wlp1s0"; autoconnect = true; };
+		wifi = { mode = "infrastructure"; ssid = "Home-Wifi-5G"; };
+		wifi-security = { key-mgmt = "wpa-psk"; auth-alg = "open"; psk = "YOUR_PSK_HERE"; };
+		ipv4 = { method = "manual"; address1 = "192.168.1.4/24,192.168.1.1"; dns = "192.168.1.1;"; };
+		ipv6.method = "auto";
+	};
+}

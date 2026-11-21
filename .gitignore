@@ -27,3 +27,4 @@ result-*
 
 # Python (the tests of home/nilo and home/deck)
 __pycache__/
+hosts/*/local.nix
