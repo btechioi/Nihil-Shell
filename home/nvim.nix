@@ -30,6 +30,7 @@ in
             fd
             wl-clipboard
             nil
+            tree-sitter
             lua-language-server
             pyright
             nixfmt
