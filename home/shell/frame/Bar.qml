@@ -93,20 +93,6 @@ Item {
 
         Ico {
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: Kvm.connectedCount > 0
-            glyph: Icons.ethernet
-            color: Kvm.active ? Tokens.signal : Tokens.dim
-
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -6
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Drawers.toggle("kvm", root.output)
-            }
-        }
-
-        Ico {
-            anchors.horizontalCenter: parent.horizontalCenter
             visible: Caffeine.on
             glyph: Icons.coffee
             color: Tokens.ink
