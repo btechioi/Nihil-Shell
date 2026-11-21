@@ -55,6 +55,12 @@ in
         greetd.enableGnomeKeyring = true;
     };
     zramSwap.enable = true;
+
+    # Preserve the Wayland session env so `sudo nvim` (and other GUI/TUI tools
+    # run as root) can reach the user's clipboard and Wayland socket.
+    security.sudo.extraConfig = ''
+        Defaults env_keep += "WAYLAND_DISPLAY XDG_RUNTIME_DIR"
+    '';
     hardware.graphics = {
         enable = true;
         # VA-API / VDPAU drivers for the Intel HD 630 (Kaby Lake, gen9).

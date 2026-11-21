@@ -50,6 +50,7 @@ in
         intel-gpu-tools
         freesm
         hyprkvmPkg
+        wl-clipboard
 
         # Dev tooling
         uv
