@@ -44,7 +44,11 @@ let
 	start = pkgs.writeShellScript "nihil-greeter" ''
 		export PATH=${lib.makeBinPath [ pkgs.coreutils ]}:$PATH
 		export QT_QPA_PLATFORM=wayland
+		export QT_AUTO_SCREEN_SCALE_FACTOR=0
 		export QT_SCALE_FACTOR=${toString scale}
+		export WLR_OUTPUT_SCALE=${toString scale}
+		export GDK_SCALE=1
+		export GDK_DPI_SCALE=${toString scale}
 		export XDG_CACHE_HOME=/var/cache/nihil-greeter
 		export XDG_STATE_HOME=/var/cache/nihil-greeter/state
 		run=''${XDG_RUNTIME_DIR:-/tmp}
