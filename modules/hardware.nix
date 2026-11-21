@@ -61,6 +61,44 @@ in
     security.sudo.extraConfig = ''
         Defaults env_keep += "WAYLAND_DISPLAY XDG_RUNTIME_DIR"
     '';
+
+    # --- Performance (tuned for Intel Kaby Lake: i5-7440HQ + HD 630) ---
+    boot.kernelParams = [
+        "i915.enable_guc=3"   # GuC submission + HuC (video decode offload)
+        "i915.enable_fbc=1"   # framebuffer compression
+        "i915.enable_psr=1"   # panel self-refresh (saves power)
+        "intel_pstate=active" # Intel P-state driver
+    ];
+
+    # I/O scheduler: none for NVMe/SSD (set in udev rules above)
+
+    # Intel thermal management
+    services.thermald.enable = true;
+
+    # Smart power management: performance on AC, powersave on battery
+    services.tlp = {
+        enable = true;
+        settings = {
+            CPU_SCALING_GOVERNOR_ON_AC = "performance";
+            CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+            CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+            CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+            # Keep the iGPU turbo enabled on AC
+            INTEL_GPU_MIN_FREQ_ON_AC = 0;
+            INTEL_GPU_MAX_FREQ_ON_AC = 0;  # 0 = default/max
+        };
+    };
+
+    # Memory tuning
+    boot.kernel.sysctl = {
+        "vm.swappiness" = 10;
+        "vm.vfs_cache_pressure" = 50;
+        "vm.dirty_ratio" = 10;
+        "vm.dirty_background_ratio" = 5;
+    };
+
+    # Nix store auto-optimisation
+    nix.settings.auto-optimise-store = true;
     hardware.graphics = {
         enable = true;
         # VA-API / VDPAU drivers for the Intel HD 630 (Kaby Lake, gen9).
@@ -80,5 +118,7 @@ in
     
     services.udev.extraRules = ''
         ACTION=="add", SUBSYSTEM=="leds", KERNEL=="platform::micmute", RUN+="${pkgs.coreutils}/bin/chgrp nihil-leds /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
+
+        ACTION=="add|change", KERNEL=="sd[a-z]*|nvme[0-9]*", ATTR{queue/scheduler}="none"
     '';
 }
